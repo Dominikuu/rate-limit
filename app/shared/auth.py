@@ -4,7 +4,7 @@ import os
 import datetime
 from flask import json, Response, request, g
 from functools import wraps
-from models.User import UserModel
+from app.models.User import UserModel
 
 
 class Auth():

@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from flask import request, Blueprint, g
 from werkzeug.wrappers import Response
-from models.Pair import PairModel, PairSchema
+from app.models.Pair import PairModel, PairSchema
 from shared.ipLimitIntercept import IpLimitIntercept
 import json
 
@@ -30,7 +30,6 @@ def create(*args, **kwargs):
     #     "user_id_one": data.get('user_id_one'),
     #     "user_id_two": data.get('user_id_two'),
     # })
-    print("data://////////", pair_in_db)
     if pair_in_db:
         message = {'error': 'ERR_PAIR_ALREADY_EXISTED'}
         return custom_response(message, HTTPStatus.BAD_REQUEST)

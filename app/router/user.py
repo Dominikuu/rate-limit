@@ -1,8 +1,8 @@
 from http import HTTPStatus
 from flask import request, Blueprint, g
 from werkzeug.wrappers import Response
-from models.User import UserModel, UserSchema
-from shared.auth import Auth
+from app.models.User import UserModel, UserSchema
+from app.shared.auth import Auth
 import json
 
 user_api = Blueprint('user_api', __name__)

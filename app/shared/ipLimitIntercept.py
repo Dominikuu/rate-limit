@@ -6,8 +6,8 @@ import time
 from http import HTTPStatus
 from flask import json, Response, request, g
 from functools import wraps
-from models.User import UserModel
-from shared.lua import SCRIPT as lua_script
+from app.models.User import UserModel
+from app.shared.lua import SCRIPT as lua_script
 
 IPLimitPeriod     = 3600
 IPLimitTimeFormat = "2006-01-02 15:04:05"

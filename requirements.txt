@@ -1,7 +1,9 @@
-
 aniso8601==8.0.0
 click==7.1.2
 Flask==1.1.2
+Flask-Caching~=1.7.2
+Flask-Session~=0.3.1
+Flask-SocketIO~=4.2.1
 Flask-RESTful==0.3.8
 itsdangerous==1.1.0
 Jinja2==2.11.2
@@ -18,3 +20,12 @@ jwt==1.0.0
 python-dotenv==0.14.0
 psycopg2==2.8.6
 flask-jwt-extended==3.24.1
+flower~=0.9.3
+gevent~=1.4.0
+gevent-websocket~=0.10.1
+greenlet==0.4.17
+gunicorn~=19.9.0
+amqp~=2.6.0
+celery~=4.3.0
+dynaconf~=2.1.0
+flask-rest-api~=0.16.1

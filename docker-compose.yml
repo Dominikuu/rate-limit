@@ -1,5 +1,6 @@
 version: '3'
 services:
+  # =============== Postgres - RDBMS database =================
   postgres:
     container_name: 'postgres'
     image: postgres
@@ -12,6 +13,7 @@ services:
 #      - pgdata:/var/lib/postgresql/data/
     ports:
       - "5432:5432"
+
   postgres-client:
     container_name: 'postgres-client'
     image: dpage/pgadmin4
@@ -22,6 +24,7 @@ services:
       - "16543:80"
     depends_on:
       - postgres
+  # =============== Redis - cache =================
   redis:
     container_name: 'redis'
     image: redis
@@ -32,6 +35,7 @@ services:
 #      - ./redis-data:/data
     ports:
       - "6380:6379"
+
   redis-client:
     container_name: 'redis-client'
     image: erikdubbelboer/phpredisadmin
@@ -47,10 +51,34 @@ services:
       - redis
     ports:
       - "8081:80"
+  # =============== RabbitMQ - queue =================
+  rabbitmq:
+    hostname: rabbitmq
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"  
+      - "15672:15672"  # here, we can access rabbitmq management plugin
+  
+  # =============== Celery worker ====================
+  celery-worker:
+    image: rate-limit-server:latest
+    command: ['celery-worker']
+    environment:
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CACHE_REDIS_URL: ${CACHE_REDIS_URL}
+      SESSION_TYPE: ${SESSION_TYPE}
+      SESSION_REDIS_URL: ${SESSION_REDIS_URL}
+    depends_on:
+      - rabbitmq
+      - redis
+  # =============== Web server ====================
   backend:
-    image: 'rate-limit-server'
-    container_name: 'rate-limit-server'
-    build: ./
+    image: rate-limit-server:latest
+    command: ['app']
     # replace original .env file defined value
     environment:
       ENV_MODE: 'dev'
@@ -60,6 +88,12 @@ services:
       REDIS_PORT: 6379
       POSTGRES_URI: postgres://postgres:root@postgres:5432/test_db
       JWT_SECRET_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+
+      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+      CACHE_REDIS_URL: ${CACHE_REDIS_URL}
+      SESSION_TYPE: ${SESSION_TYPE}
+      SESSION_REDIS_URL: ${SESSION_REDIS_URL}
     restart: always
     ports:
       - "5000:5000"
@@ -68,3 +102,5 @@ services:
     depends_on:
       - postgres
       - redis
+      - celery-worker
+      - rabbitmq
