@@ -3,7 +3,7 @@ import logging
 from celery import Celery
 from dynaconf.contrib import FlaskDynaconf
 from flask import Flask
-from flask_rest_api import Api
+# from flask_rest_api import Api
 
 from app.extension import (cache, session, socket_io)
 
@@ -30,11 +30,11 @@ def create_celery(app):
 
 
 def register_blueprints(app, *blps):
-    api = Api(app=app)
+    # api = Api(app=app)
     for blp in blps:
-        api.register_blueprint(blp)
+        app.register_blueprint(blp)
 
-    return api
+    return app
 
 
 def create_app(config_module):
@@ -51,12 +51,14 @@ def create_app(config_module):
     })
 
     # init SocketIO
-    if not app.config.CELERY_BROKER_URL:
-        logging.warn(
-            """app.config.CELERY_BROKER_URL is not set. """
-            """SocketIO may not work with Celery workers now.""")
+    # if not app.config.CELERY_BROKER_URL:
+    #     logging.warn(
+    #         """app.config.CELERY_BROKER_URL is not set. """
+    #         """SocketIO may not work with Celery workers now.""")
 
-    socket_io.init_app(app=app, message_queue=app.config.CELERY_BROKER_URL)
+    # logging.warn(
+    #     """app.config.CELERY_BROKER_URL""", app.config.CELERY_BROKER_URL)
+    # socket_io.init_app(app=app, message_queue=app.config.CELERY_BROKER_URL)
 
     # init Session
     session.init_app(app=app)

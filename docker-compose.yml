@@ -14,16 +14,16 @@ services:
     ports:
       - "5432:5432"
 
-  postgres-client:
-    container_name: 'postgres-client'
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "dominique@example.com"
-      PGADMIN_DEFAULT_PASSWORD: "dominique"
-    ports:
-      - "16543:80"
-    depends_on:
-      - postgres
+  # postgres-client:
+  #   container_name: 'postgres-client'
+  #   image: dpage/pgadmin4
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: "dominique@example.com"
+  #     PGADMIN_DEFAULT_PASSWORD: "dominique"
+  #   ports:
+  #     - "16543:80"
+  #   depends_on:
+  #     - postgres
   # =============== Redis - cache =================
   redis:
     container_name: 'redis'
@@ -36,28 +36,30 @@ services:
     ports:
       - "6380:6379"
 
-  redis-client:
-    container_name: 'redis-client'
-    image: erikdubbelboer/phpredisadmin
-    environment:
-      - ADMIN_USER=admin
-      - ADMIN_PASS=admin
-      - REDIS_1_HOST=redis
-      - REDIS_1_PORT=6379
-      - REDIS_1_AUTH=root
+  # redis-client:
+  #   container_name: 'redis-client'
+  #   image: erikdubbelboer/phpredisadmin
+  #   environment:
+  #     - ADMIN_USER=admin
+  #     - ADMIN_PASS=admin
+  #     - REDIS_1_HOST=redis
+  #     - REDIS_1_PORT=6379
+  #     - REDIS_1_AUTH=root
       
-    restart: always
-    depends_on:
-      - redis
-    ports:
-      - "8081:80"
+  #   restart: always
+  #   depends_on:
+  #     - redis
+  #   ports:
+  #     - "8081:80"
   # =============== RabbitMQ - queue =================
   rabbitmq:
     hostname: rabbitmq
     image: rabbitmq:3-management
     environment:
-      - RABBITMQ_DEFAULT_USER=admin
-      - RABBITMQ_DEFAULT_PASS=mypass
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: mypass
+      RABBITMQ_NODE_PORT: ${RABBITMQ_NODE_PORT}
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
     ports:
       - "5672:5672"  
       - "15672:15672"  # here, we can access rabbitmq management plugin
@@ -67,21 +69,24 @@ services:
     image: rate-limit-server:latest
     command: ['celery-worker']
     environment:
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
-      CACHE_REDIS_URL: ${CACHE_REDIS_URL}
-      SESSION_TYPE: ${SESSION_TYPE}
-      SESSION_REDIS_URL: ${SESSION_REDIS_URL}
+      CELERY_BROKER_URL: rabbitmq://localhost:5672
+      CELERY_RESULT_BACKEND: redis://localhost:6379
+      CACHE_REDIS_URL: redis://localhost:6379
+      SESSION_TYPE: redis
+      SESSION_REDIS_URL: redis://localhost:6379
+    volumes:
+      - .:/app
     depends_on:
       - rabbitmq
       - redis
+
   # =============== Web server ====================
   backend:
     image: rate-limit-server:latest
     command: ['app']
     # replace original .env file defined value
     environment:
-      ENV_MODE: 'dev'
+      ENV_MODE: dev
       DB_HOST: postgres
       REDIS_ENDPOINT: redis:6379
       REDIS_HOST: redis
@@ -89,11 +94,11 @@ services:
       POSTGRES_URI: postgres://postgres:root@postgres:5432/test_db
       JWT_SECRET_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
-      CACHE_REDIS_URL: ${CACHE_REDIS_URL}
-      SESSION_TYPE: ${SESSION_TYPE}
-      SESSION_REDIS_URL: ${SESSION_REDIS_URL}
+      CELERY_BROKER_URL: rabbitmq://rabbitmq@localhost:5672
+      CELERY_RESULT_BACKEND: redis://@localhost:6379
+      CACHE_REDIS_URL: redis://localhost:6379
+      SESSION_TYPE: redis
+      SESSION_REDIS_URL: redis://localhost:6379
     restart: always
     ports:
       - "5000:5000"

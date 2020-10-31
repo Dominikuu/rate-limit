@@ -1,17 +1,20 @@
+import logging
 from flask import Flask
 from flask import session
 from flask import request
 from flask import g, url_for
 import redis
-import os, sys
+import os
+import sys
 
 # from app.models import bcrypt, db
 # from router.user import user_api as user_blueprint
 # from router.pair import pair_api as pair_blueprint
 # from config import app_config
 from app import (create_app, create_celery)
+# from app import (create_app)
 from app.config import app_config
-env_mode = os.environ['ENV_MODE']
+# env_mode = os.environ['ENV_MODE']
 
 sys.path.append(os.path.dirname(__file__) + os.sep + '../')
 
@@ -58,8 +61,8 @@ sys.path.append(os.path.dirname(__file__) + os.sep + '../')
 # if __name__ == '__main__':
 #     app.run(debug=True, host='0.0.0.0')
 
-    
-app = create_app('app.config.' + app_config[env_mode])
+
+app = create_app('app.config.Development')
 
 if __name__ != '__main__':
     # Use gunicorn to run the app. We need to have a logger to display logs.
@@ -78,6 +81,7 @@ if __name__ != '__main__':
 
     # https://medium.com/@sanchitsokhey/centralised-logging-for-django-gunicorn-and-celery-using-elk-stack-76b13c54414c
 
+print("celery=>>>>>>>>>>>>>>", app)
 celery = create_celery(app=app)
 
 if __name__ == '__main__':

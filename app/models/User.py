@@ -2,7 +2,7 @@ from marshmallow import fields, Schema
 import uuid
 import datetime
 from . import db, bcrypt
-from models.Pair import PairSchema
+from app.models.Pair import PairSchema
 
 
 class UserModel(db.Model):
@@ -19,7 +19,7 @@ class UserModel(db.Model):
     password_digest = db.Column(db.String(128), nullable=False)
     created_time = db.Column(db.DateTime)
     modified_time = db.Column(db.DateTime)
-    
+
     db.relationship('PairModel', backref='users')
 
     # class constructor

@@ -4,7 +4,8 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-class Development(object):
+
+class Development:
     """
     Development environment configuration
     """
@@ -27,7 +28,8 @@ class Development(object):
     CELERY_IMPORTS = ('app.tasks')
     CELERY_BROKER_HEARTBEAT = 0
 
-class Production(object):
+
+class Production:
     """
     Production environment configurations
     """
@@ -35,6 +37,7 @@ class Production(object):
     TESTING = False
     SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
     JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+
 
 app_config = {
     'dev': 'Development',

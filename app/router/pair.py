@@ -2,7 +2,7 @@ from http import HTTPStatus
 from flask import request, Blueprint, g
 from werkzeug.wrappers import Response
 from app.models.Pair import PairModel, PairSchema
-from shared.ipLimitIntercept import IpLimitIntercept
+from app.shared.ipLimitIntercept import IpLimitIntercept
 import json
 
 
@@ -19,7 +19,7 @@ def create(*args, **kwargs):
     """
     req_data = request.get_json()
     data = pair_schema.load(req_data)
-    
+
     error = None
     if error:
         return custom_response(error, HTTPStatus.BAD_REQUEST)
@@ -35,7 +35,7 @@ def create(*args, **kwargs):
         return custom_response(message, HTTPStatus.BAD_REQUEST)
     pair = PairModel(data)
     pair.save()
-    
+
     ser_data = pair_schema.dump(pair)
     return custom_response(ser_data, HTTPStatus.OK, headers=kwargs["headers"])
 
@@ -50,6 +50,7 @@ def get_all(*args, **kwargs):
     pairs = PairModel.get_all_pairs()
     ser_pair = pair_schema.dump(pairs, many=True)
     return custom_response(ser_pair, HTTPStatus.OK, headers=kwargs["headers"])
+
 
 def custom_response(res, status_code, headers=None):
     """
