@@ -2,7 +2,7 @@ from marshmallow import fields, Schema
 import uuid
 import datetime
 from . import db, bcrypt
-from models.Pair import PairSchema
+from app.models.Pair import PairSchema
 
 
 class UserModel(db.Model):

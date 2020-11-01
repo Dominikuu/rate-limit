@@ -45,21 +45,21 @@ def create_app(config_module):
     FlaskDynaconf(app=app)
 
     # init Cache
-    cache.init_app(app, {
-        "CACHE_TYPE": "redis",
-        "CACHE_REDIS_URL": app.config.CACHE_REDIS_URL
-    })
+    # cache.init_app(app, {
+    #     "CACHE_TYPE": "redis",
+    #     "CACHE_REDIS_URL": app.config.CACHE_REDIS_URL
+    # })
 
-    # init SocketIO
-    if not app.config.CELERY_BROKER_URL:
-        logging.warn(
-            """app.config.CELERY_BROKER_URL is not set. """
-            """SocketIO may not work with Celery workers now.""")
+    # # init SocketIO
+    # if not app.config.CELERY_BROKER_URL:
+    #     logging.warn(
+    #         """app.config.CELERY_BROKER_URL is not set. """
+    #         """SocketIO may not work with Celery workers now.""")
 
-    socket_io.init_app(app=app, message_queue=app.config.CELERY_BROKER_URL)
+    # socket_io.init_app(app=app, message_queue=app.config.CELERY_BROKER_URL)
 
-    # init Session
-    session.init_app(app=app)
+    # # init Session
+    # session.init_app(app=app)
 
     # register blueprints
     from app.router import user_api, pair_api

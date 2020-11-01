@@ -1,11 +1,12 @@
 from http import HTTPStatus
-from flask import request, Blueprint, g
+from flask import request, g
 from werkzeug.wrappers import Response
 from app.models.User import UserModel, UserSchema
 from app.shared.auth import Auth
 import json
+from flask_rest_api import Blueprint
 
-user_api = Blueprint('user_api', __name__)
+user_api = Blueprint('user_api', __name__, url_prefix="/user")
 user_schema = UserSchema()
 
 @user_api.route('/', methods=['POST'])

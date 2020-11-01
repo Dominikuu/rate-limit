@@ -1,12 +1,12 @@
 from http import HTTPStatus
-from flask import request, Blueprint, g
+from flask import request, g
 from werkzeug.wrappers import Response
 from app.models.Pair import PairModel, PairSchema
-from shared.ipLimitIntercept import IpLimitIntercept
+from app.shared.ipLimitIntercept import IpLimitIntercept
 import json
 
-
-pair_api = Blueprint('pair_api', __name__)
+from flask_rest_api import Blueprint
+pair_api = Blueprint('pair_api', __name__, url_prefix="/pair")
 
 pair_schema = PairSchema()
 

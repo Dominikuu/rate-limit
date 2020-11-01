@@ -2,15 +2,16 @@ from flask import Flask
 from flask import session
 from flask import request
 from flask import g, url_for
+import logging
 import redis
 import os, sys
 
 # from app.models import bcrypt, db
 # from router.user import user_api as user_blueprint
 # from router.pair import pair_api as pair_blueprint
-# from config import app_config
-from app import (create_app, create_celery)
 from app.config import app_config
+from app import (create_app, create_celery)
+from app.config import Development
 env_mode = os.environ['ENV_MODE']
 
 sys.path.append(os.path.dirname(__file__) + os.sep + '../')
@@ -58,8 +59,8 @@ sys.path.append(os.path.dirname(__file__) + os.sep + '../')
 # if __name__ == '__main__':
 #     app.run(debug=True, host='0.0.0.0')
 
-    
 app = create_app('app.config.' + app_config[env_mode])
+# app = create_app(Development)
 
 if __name__ != '__main__':
     # Use gunicorn to run the app. We need to have a logger to display logs.
@@ -68,17 +69,7 @@ if __name__ != '__main__':
     # app.logger.handlers.extend(gunicorn_logger.handlers)
     app.logger.setLevel(gunicorn_logger.level)
 
-    # https://realpython.com/python-web-applications-with-flask-part-iii/#logging
-    # handler = logging.StreamHandler()
-    # # log_format = "%(asctime)s\t%(levelname)s\t%(user_id)s\t%(ip)s\t%(method)s\t%(url)s\t%(message)s"
-    # log_format = "%(asctime)s\t%(levelname)s\t%(message)s"
-    # formatter = logging.Formatter(log_format)
-    # handler.setFormatter(formatter)
-    # app.logger.addHandler(handler)
-
-    # https://medium.com/@sanchitsokhey/centralised-logging-for-django-gunicorn-and-celery-using-elk-stack-76b13c54414c
-
-celery = create_celery(app=app)
+# celery = create_celery(app=app)
 
 if __name__ == '__main__':
     # Use the embedded server to run (e.g., FLASK_APP=server.py flask run).

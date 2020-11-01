@@ -4,7 +4,7 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-class Development(object):
+class Development:
     """
     Development environment configuration
     """
@@ -15,17 +15,7 @@ class Development(object):
     SESSION_COOKIE_SECURE = False
     WTF_CSRF_ENABLED = False
     SQLALCHEMY_DATABASE_URI = os.getenv('POSTGRES_URI')
-    """
-    Celery Config
-    - CELERY_BROKER_URL uses `pyamqp`.
-    - CELERY_IMPORTS registers tasks.
-    - BROKER_HEARTBEAT of Celery App must be set to 0
-        so that Rabbitmq will not disconnect the connection.
-    """
-    CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
-    CELERY_IMPORTS = ('app.tasks')
-    CELERY_BROKER_HEARTBEAT = 0
+    OPENAPI_VERSION = os.environ.get('OPENAPI_VERSION', '3.0.2')
 
 class Production(object):
     """
