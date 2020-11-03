@@ -1,11 +1,8 @@
 import logging
 
-from celery import Celery
 from dynaconf.contrib import FlaskDynaconf
 from flask import Flask
 from flask_rest_api import Api
-
-from app.extension import (cache, session, socket_io)
 
 
 def create_celery(app):

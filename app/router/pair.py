@@ -26,10 +26,6 @@ def create(*args, **kwargs):
 
     # check if user already exist in the db
     pair_in_db = PairModel.get_one_pair(data)
-    # pair_in_db = PairModel.get_one_pair({
-    #     "user_id_one": data.get('user_id_one'),
-    #     "user_id_two": data.get('user_id_two'),
-    # })
     if pair_in_db:
         message = {'error': 'ERR_PAIR_ALREADY_EXISTED'}
         return custom_response(message, HTTPStatus.BAD_REQUEST)

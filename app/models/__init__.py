@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from app.config import Development,app_config
+from app.config import app_config
 
 
 app = Flask(__name__)

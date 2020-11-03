@@ -77,8 +77,8 @@ services:
   #     - redis
   # =============== Web server ====================
   backend:
-    image: rate-limit-server:latest
-    command: ['app']
+    build: ./app
+    # image: rate-limit-server:latest
     # replace original .env file defined value
     environment:
       ENV_MODE: 'dev'
@@ -89,6 +89,7 @@ services:
       POSTGRES_URI: postgres://postgres:root@postgres:5432/test_db
       JWT_SECRET_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
     restart: always
+    command: gunicorn -w 1 -b 0.0.0.0:5000 app.app:app
     ports:
       - "5000:5000"
     volumes:
