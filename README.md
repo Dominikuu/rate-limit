@@ -22,15 +22,15 @@ cd <project directory>
 docker-compose up --build
 
 ```
-## Environment variable
+
 ## API definition
 ### Current User related
 
 Each endpoint manipulates or displays information related to the User whose
 Token is provided with the request:
 
-* [Show info] : `GET /api/user/`
-* [Update info] : `PUT /api/user/`
+* Show info : `GET /api/user/`
+* Update info : `PUT /api/user/`
 
 ### Account related
 
@@ -46,22 +46,22 @@ has permissions to access.
 ## DB structure
 - Users
 
-| Age           | Time  | Food | Gold |
-| ------------  | ----  | ---  | ---  |
-| Feudal Age    | 02:10 |  500 |    0 |
-| Castle Age    | 02:40 |  800 |  200 |
-| Imperial Age  | 03:30 | 1000 |  800 |
+| Column name   | Type  | Note |
+| ------------  | ----  | ---  |
+| Feudal Age    | 02:10 |  500 |
+| Castle Age    | 02:40 |  800 |
+| Imperial Age  | 03:30 | 1000 |
 
 - Pairs
 
-| Age           | Time  | Food | Gold |
-| ------------  | ----  | ---  | ---  |
-| Feudal Age    | 02:10 |  500 |    0 |
-| Castle Age    | 02:40 |  800 |  200 |
-| Imperial Age  | 03:30 | 1000 |  800 |
+
+| Column name   | Type  | Note |
+| ------------  | ----  | ---  |
+| Feudal Age    | 02:10 |  500 |
+| Castle Age    | 02:40 |  800 |
+| Imperial Age  | 03:30 | 1000 |
 
 ## How to implement IP request check
-
 
 | Hash name                           | count             | reset         |
 | ----------------------------------  | ----------------- | ------------- |
