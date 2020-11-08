@@ -46,20 +46,21 @@ has permissions to access.
 ## DB structure
 - Users
 
-| Column name   | Type  | Note |
-| ------------  | ----  | ---  |
-| Feudal Age    | 02:10 |  500 |
-| Castle Age    | 02:40 |  800 |
-| Imperial Age  | 03:30 | 1000 |
+| Column name     | Type      | 
+| --------------- | --------- |
+| id              | uuid      | 
+| email           | char      |             
+| name            | char      |         
+| password_digest | char      |      
+| modified_time   | timestamp |      
+| created_time    | timestamp |     
 
 - Pairs
 
-
-| Column name   | Type  | Note |
-| ------------  | ----  | ---  |
-| Feudal Age    | 02:10 |  500 |
-| Castle Age    | 02:40 |  800 |
-| Imperial Age  | 03:30 | 1000 |
+| Column name   | Type  |
+| ------------  | ----  |
+| user_id_one   | uuid  |
+| user_id_two   | uuid  |
 
 ## How to implement IP request check
 
