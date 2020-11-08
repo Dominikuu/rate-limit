@@ -1,6 +1,6 @@
 # rate-limit
 
-A dockerized flask app combined with JWT, postgreSQL and redis. 
+  A dockerized flask app combined with JWT, postgreSQL and redis. 
 It use redis to record the amount of request and set X-rate-limit in the response header. If exceed the limit, it will send HTTPstatus 429.
 
 ## Prerequisite
@@ -20,16 +20,24 @@ cd <project directory>
 
 # Run docker compose to create contain
 docker-compose up --build
-
 ```
 
 ## API definition
+
+### Pair related
+
+Each endpoint manipulates or displays information related to the User whose
+Token is provided with the request:
+
+* Show info   : `GET /api/user/`
+* Update info : `PUT /api/user/`
+
 ### Current User related
 
 Each endpoint manipulates or displays information related to the User whose
 Token is provided with the request:
 
-* Show info : `GET /api/user/`
+* Show info   : `GET /api/user/`
 * Update info : `PUT /api/user/`
 
 ### Account related
